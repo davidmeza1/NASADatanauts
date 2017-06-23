@@ -34,3 +34,4 @@ vignettes/*.pdf
 
 # Neo4j database
 neo4j/**
+.Rproj.user

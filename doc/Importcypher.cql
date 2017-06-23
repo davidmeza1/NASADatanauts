@@ -1,15 +1,17 @@
+// Downloads info on the firs 100 items on the website
 WITH "https://data.nasa.gov/data.json" AS url
 CALL apoc.load.json(url) YIELD value
 UNWIND value.dataset AS dbs
 RETURN dbs.contactPoint, dbs.description, dbs.keyword LIMIT 100
 
-//Reads json file
+//Reads json file from tthe import file in the neo4j folder
+// The neo4j folder is to large to be placed on github
 WITH "file:///E:/Users/David/Documents/Neo4j/datanauts/import/nasa_data.json" AS url
 CALL apoc.load.json(url) YIELD value
 UNWIND value.dataset AS dbs
 RETURN dbs.contactPoint, dbs.description, dbs.keyword
 
-// For use on my MAC
+// For use on my MAC, same command different url structure
 WITH "file:///Users/dmeza/OneDrive/Github/NASAdatanauts/neo4j/import/nasa_data.json" AS url
 CALL apoc.load.json(url) YIELD value
 UNWIND value.dataset AS dbs
@@ -17,7 +19,7 @@ RETURN dbs.contactPoint, dbs.description, dbs.keyword
 
 
 
-// Create Nodes and edges
+// Create Nodes and edges, (Still expanding)
 
 WITH "file:///E:/Users/David/Documents/Neo4j/datanauts/import/nasa_data.json" AS url
 CALL apoc.load.json(url) YIELD value

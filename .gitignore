@@ -35,3 +35,8 @@ vignettes/*.pdf
 # Neo4j database
 neo4j/**
 .Rproj.user
+
+# Non scrubbed presentations
+presentations/Data_Science_Presentation/**
+presentations/Frustration_Analysis/**
+presentations/Training_Analysis/**

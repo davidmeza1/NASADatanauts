@@ -3,9 +3,15 @@ library(tidyverse)
 library(tidytext)
 library(readr)
 library(lubridate)
+library(LDAvis)
+library(corrplot)
 
 llis_df <- read_csv("~/OneDrive/GitHub/RCodeShare/data/llis.csv",
                             col_types = cols(LessonDate = col_date(format = "%m/%d/%y")))
+#windows
+llis_df <- read_csv("data/llis.csv",
+                    col_types = cols(LessonDate = col_date(format = "%m/%d/%y")))
+
 by_lesson <- llis_df %>% 
     transmute(lessonID = LessonId, title = Title, lesson = Lesson)
 
@@ -22,7 +28,7 @@ word_counts <- by_lesson_word %>%
 word_counts <- word_counts %>% arrange(word) %>% slice(-1:-1187)
 
 #########################################
-# Do this after my_stop_words is created
+# Do this after my_stop_words is created (see below) 
 word_counts <- word_counts %>% 
     anti_join(my_stop_words) %>% 
     count(title, word, sort = TRUE) %>% 
@@ -65,7 +71,8 @@ top_terms %>%
     facet_wrap(~ topic, scales = "free") +
     coord_flip()
 
-# Before we go further lets explore the terms
+#### Before we go further lets explore the terms
+#### Create my_stop_words
 
 # Thus, we may want to know which topics are associated with each document. 
 # We can find this by examining the per-document-per-topic probabilities, “gamma”.
@@ -97,12 +104,14 @@ top_topic_document <- lesson_gamma %>%
     arrange(document, -topic)
 top_topic_document
    
-
+##############################
 lesson_gamma %>% 
     mutate(title = reorder(document, gamma * topic)) %>% 
     ggplot(aes(factor(topic), gamma)) + 
     geom_boxplot() + 
     facet_wrap(~ title)
+###############################
+
 
 # Creates a dataframe of the per-document-per-topic probabilities, “gamma”, of
 # each topic for each document

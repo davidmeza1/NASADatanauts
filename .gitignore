@@ -36,7 +36,8 @@ vignettes/*.pdf
 neo4j/**
 .Rproj.user
 
-# Non scrubbed presentations
+# Non scrubbed folders
 presentations/Data_Science_Presentation/**
 presentations/Frustration_Analysis/**
 presentations/Training_Analysis/**
+shinyApp/Crew_Comments_Sample_App/**

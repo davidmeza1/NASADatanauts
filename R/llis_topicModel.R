@@ -6,7 +6,7 @@ library(lubridate)
 library(LDAvis)
 library(corrplot)
 
-llis_df <- read_csv("~/OneDrive/GitHub/RCodeShare/data/llis.csv",
+llis_df <- read_csv("~/OneDrive/GitHub/NASADatanauts/data/llis.csv",
                             col_types = cols(LessonDate = col_date(format = "%m/%d/%y")))
 #windows
 llis_df <- read_csv("data/llis.csv",

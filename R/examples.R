@@ -14,7 +14,7 @@ json <- with(Jeopardy,
              createJSON(phi, theta, doc.length, vocab, term.frequency))
 serVis(json) # Check out Topic 22 (bodies of water!)
 
-
+#############################################
 phi <- posterior(fitted)$terms %>% as.matrix
 theta <- posterior(fitted)$topics %>% as.matrix
 vocab <- colnames(phi)

@@ -1,0 +1,16 @@
+---
+title: Structural Equation Modeling
+name: SEM
+version: 0.0.0
+jms: '1.0'
+authors:
+  - Who wrote it
+maintainer: The package maintainer <yourself@somewhere.net>
+date: '2017-07-24'
+type: R
+description: >-
+  More about what it does (maybe more than one line) Use four spaces when
+  indenting paragraphs within the Description.
+analyses: []
+
+...

@@ -1,0 +1,154 @@
+---
+title: "Power and Sample Size"
+author: "David Meza"
+date: "8/7/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(sjstats)
+```
+
+# sjstats Package
+
+The sjsats package (https://cran.r-project.org/web/packages/sjstats/sjstats.pdf)
+
+The information below is directly from page 51 of the pdf, detailing the info for the
+`smpsize_lmm` function which provides the sample size for linear mixed models.
+
+## Description
+
+Compute an approximated sample size for linear mixed models (two-level-designs), based on powercalculation
+for standard design and adjusted for design effect for 2-level-designs.
+
+## Usage
+
+`smpsize_lmm(eff.size, df.n = NULL, power = 0.8, sig.level = 0.05, k, n, icc = 0.05)`
+
+## Arguments
+
+eff.size - Effect size.
+
+df.n -  Optional argument for the degrees of freedom for numerator. See ’Details’.
+
+power - Power of test (1 minus Type II error probability).
+
+sig.level - Significance level (Type I error probability).
+
+k - Number of cluster groups (level-2-unit) in multilevel-design.
+
+n - Optional, number of observations per cluster groups (level-2-unit) in multilevel design.
+
+icc - Expected intraclass correlation coefficient for multilevel-model.
+
+## Details
+
+The sample size calculation is based on a power-calculation for the standard design. If df.n
+is not specified, a power-calculation for an unpaired two-sample t-test will be computed (using
+pwr.t.test of the pwr-package). If df.n is given, a power-calculation for general linear models
+will be computed (using pwr.f2.test of the pwr-package). The sample size of the standard design
+is then adjusted for the design effect of two-level-designs **(see deff)**. Thus, the sample size calculation
+is appropriate in particular for two-level-designs (see Snijders 2005). Models that additionally
+include repeated measures (three-level-designs) may work as well, however, the computed sample
+size may be less accurate.
+
+## Value
+
+A list with two values: The number of subjects per cluster, and the total sample size for the linear
+mixed model.
+
+## References
+
+*Cohen J. 1988. Statistical power analysis for the behavioral sciences (2nd ed.). Hillsdale,NJ:
+Lawrence Erlbaum.*
+
+*Hsieh FY, Lavori PW, Cohen HJ, Feussner JR. 2003. An Overview of Variance Inflation Factors
+for Sample-Size Calculation. Evaluation & the Health Professions 26: 239–257. doi: 10.1177/
+0163278703255230*
+
+*Snijders TAB. 2005. Power and Sample Size in Multilevel Linear Models. In: Everitt BS, Howell
+DC (Hrsg.). Encyclopedia of Statistics in Behavioral Science. Chichester, UK: John Wiley & Sons,
+Ltd. doi: 10.1002/0470013192.bsa492*
+
+## Examples
+
+Sample size for multilevel model with 30 cluster groups and a small to
+medium effect size (Cohen's d) of 0.3. 27 subjects per cluster and
+hence a total sample size of about 802 observations is needed.
+
+```{r}
+smpsize_lmm(eff.size = .3, k = 30)
+```
+
+
+Sample size for multilevel model with 20 cluster groups and a medium
+to large effect size for linear models of 0.2. Five subjects per cluster and
+hence a total sample size of about 107 observations is needed.
+
+```{r}
+smpsize_lmm(eff.size = .2, df.n = 5, k = 20, power = .9)
+```
+
+
+# Sample size for study
+
+Based on the examples above and the data you provided, here is the code to determine
+sample size:
+
+```{r}
+#Sample size for the study
+smpsize_lmm(eff.size = .2, df.n = 25, power = 0.8, sig.level = 0.05, k =40)
+```
+
+1. df.n is based on the approximate class size
+2. power was provided by you
+3. I assumed significance level of 0.05
+4. K is the total number of groups, 20 treatment and 20 control
+
+
+eff.size I used from the package example. To determine the study effect size (eff.size)
+we can use the `deff()` function. The details are in the pdf.
+
+## Description
+
+Compute the design effect (also called Variance Inflation Factor) for mixed models with two-level
+design.
+
+## Usage
+
+deff(n, icc = 0.05)
+
+## Arguments
+
+n - Average number of observations per grouping cluster (i.e. level-2 unit).
+icc -  Assumed `intraclass correlation coefficient` for multilevel-model.
+
+Not knowing your thoughts on the icc, I used the default value of 0.05.
+
+```{r}
+deff(25)
+```
+
+The result shows a effect size of 2.2. If we put this into the `smpsize_lmm()` function, we get:
+
+```{r}
+smpsize_lmm(eff.size = 2.2, df.n = 25, power = 0.8, sig.level = 0.05, k =40)
+```
+
+I hope this is useful information. You will need to verify I inserted the correct values for the parameters.
+
+Finally here are a couple of other websites I found useful.
+
+### HLM using R
+
+https://www.methodsconsultants.com/tutorial/estimating-hlm-models-using-r-part-1/
+
+### The pwr packge for determining the power and sample size
+
+https://cran.r-project.org/web/packages/pwr/vignettes/pwr-vignette.html
+
+### Overview of the pwr package
+
+http://www.statmethods.net/stats/power.html
+

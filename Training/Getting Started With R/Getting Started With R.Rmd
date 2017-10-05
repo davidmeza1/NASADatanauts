@@ -1,0 +1,388 @@
+---
+title: "Getting Started with R"
+author: "David Meza"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Download and Install R
+
+![Tareef Kawaf from RStudio presenting at useR! 2017 Brussels](https://www.youtube.com/watch?v=w0SL8EbLW88&list=PL9HYL-VRX0oSFL5cDLSwDa8jKAa9RG8UR)
+
+R is a free software environment for statistical computing and graphics. It compiles
+and runs on a wide variety of UNIX platforms, Windows and MacOS. 
+
+[R Project for Statistical Computing](https://www.r-project.org/)
+
+*Windows*
+
+* Open http://www.r-project.org/ in your browser.
+* Click on “CRAN”. You’ll see a list of mirror sites, organized by country.
+* Select a site near you.
+* Click on “Windows” under “Download and Install R”.
+* Click on “base”.
+* Click on the link to download the latest version of R (an .exe file).
+* When the download completes, double-click the .exe file and answer the usual
+questions.
+
+*OS X*
+
+* Open http://www.r-project.org/ in your browser.
+* Click on “CRAN”. You’ll see a list of mirror sites, organized by country.
+* Select a site near you.
+* Click on “MacOS X”.
+* Click on the .pkg file for the latest version of R, under “Files:”, to download it.
+* When the download completes, double-click the .pkg file and answer the usual
+questions.
+
+[RStudio](https://www.rstudio.com/) makes R easier to use. It includes a code editor,
+debugging & visualization tools. RStudio is an active member of the R community. 
+We believe free and open source data analysis software is a foundation for innovative
+and important work in science, education, and industry. The many customers who
+value our professional software capabilities help us contribute to this community.
+
+## How to Get Help on a Function
+
+Use help to display the documentation for the function:
+
+`help("hist")`
+
+`?rnorm`
+
+`data()`
+
+`vignette()`
+
+```{r help-functions, exercise = TRUE}
+
+```
+
+Use args for a quick reminder of the function arguments:
+
+*Type this in the console below: `args(tidyr::gather)`*
+
+```{r args, exercise = TRUE}
+
+
+```
+
+Use **example** to see examples on using a function:
+
+`library(dplyr)`
+
+`example("filter")`
+
+```{r example, exercise = TRUE}
+
+```
+
+Type the function name with out parenthesis to view the function:
+
+Try `heatmap`
+
+```{r heatmap, exercise = TRUE}
+
+```
+
+## Searching the Web for Help
+
+Inside R, use the RSiteSearch function to search by keyword or phrase:
+RSiteSearch("key phrase")
+
+In your browser, try using these sites for searching:
+
+[Rseek](http://rseek.org) is a Google custom search that is focused on R-specific websites.
+
+[Stack Overflow](http://stackoverflow.com/) is a searchable Q&A site oriented 
+toward programming issues such as data structures, coding, and graphics.
+
+The [Statistical Analysis](http://stats.stackexchange.com/) area on Stack Exchange
+is also a searchable Q&A site, but it is oriented more toward statistics than programming.
+
+[RStudio cheatsheets](https://www.rstudio.com/resources/cheatsheets/) make it easy
+to learn about and use some of our favorite packages. From time to time, new cheat
+sheets will be added to the gallery.
+
+## Helpful Tools
+
+[Cheatsheets](https://www.rstudio.com/resources/cheatsheets/)
+
+Code Snippets are text macros that are used for quickly inserting common snippets
+of code.
+
+[Using Code snippets](https://support.rstudio.com/hc/en-us/articles/204463668-Code-Snippets?version=1.0.153&mode=desktop)
+
+[Custom snippets in RStudio](https://maraaverick.rbind.io/2017/09/custom-snippets-in-rstudio-faster-tweet-chunks-for-all/?utm_content=bufferb9ad2&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer) 
+
+RStudio addins were released in early 2016 to provide anyone with the ability to
+add "extensions" to RStudio.
+
+[RStudio Addins](https://www.rstudio.com/resources/webinars/understanding-add-ins/)
+
+[Discover and install useful RStudio addins](https://cran.r-project.org/web/packages/addinslist/README.html)
+
+## Reading Files
+
+*Tabular datafiles are quite common. They are text files with a simple format:*
+
+* Each line contains one record.
+* Within each record, fields (items) are separated by a one-character delimiter, such
+as a space, tab, colon, or comma.
+* Each record contains the same number of fields.
+
+Creating a dataframe to store data from a csv file:
+
+```{r readcsv, echo = TRUE, eval = FALSE}
+batting1 <- read.csv(file = "Batting.csv")
+head(batting1)
+```
+
+Creating a dataframe to store data from an xlsx file:
+
+
+
+```{r readxl, echo = TRUE, eval = FALSE}
+library(readxl)
+batting2 <- read_excel(path = "Batting.xlsx")
+head(batting2)
+```
+
+
+
+## Creating A Vector
+
+Use the c(...) operator to construct a vector from given values.
+`c(1,1,2,3,5,8,13,21)`
+
+`c(1*pi, 2*pi, 3*pi, 4*pi)`
+
+`c("Everyone", "loves", "stats.")`
+
+`c(TRUE,TRUE,FALSE,TRUE)`
+
+```{r vectors, exercise = TRUE}
+
+```
+
+If the arguments to c(...) are themselves vectors, it flattens them and combines them
+into a single vector:
+
+`v1 <- c(1,2,3)`
+
+`v2 <- c(4,5,6)`
+
+`c(v1,v2)`
+
+```{r combine_vector, exercise = TRUE}
+
+
+```
+
+Vectors cannot contain a mix of data types, such as numbers and strings. If you create
+a vector from mixed elements, R will try to accommodate you by converting one of
+them:
+
+`v1 <- c(1,2,3)`
+
+`v3 <- c("A","B","C")`
+
+`c(v1,v3)`
+
+```{r}
+
+```
+
+## Computing Basic Statistics
+
+`x <- c(0,1,1,2,3,5,8,13,21,34)`
+
+`x`
+
+`mean(x)`
+
+`median(x)`
+
+`sd(x)`
+
+`var(x)`
+
+`summary(x)`
+
+```{r basic_stats, exercise = TRUE}
+
+```
+ 
+The cor and cov functions can calculate the correlation and covariance, respectively,
+between two vectors:
+
+`x <- c(0,1,1,2,3,5,8,13,21,34)`
+
+`y <- log(x+1)`
+
+`cor(x,y)`
+
+`cov(x,y)`
+
+```{r cor_cov, exercise = TRUE}
+
+
+```
+
+All these functions are picky about values that are not available (NA). Even one NA
+value in the vector argument causes any of these functions to return NA, or even halt
+altogether with a cryptic error:
+
+`x <- c(0,1,1,2,3,NA)`
+
+`mean(x)`
+
+`sd(x)`
+
+```{r picky_NA, exercise = TRUE}
+
+```
+
+It’s annoying when R is that cautious, but it is the right thing to do. You must think
+carefully about your situation. Does an NA in your data invalidate the statistic? If yes,
+then R is doing the right thing. If not, you can override this behavior by setting
+na.rm=TRUE, which tells R to ignore the NA values:
+
+`x <- c(0,1,1,2,3,NA)`
+
+`mean(x, na.rm=TRUE)`
+
+`sd(x, na.rm=TRUE)`
+
+```{r, NAremove, exercise = TRUE}
+
+
+```
+
+Examples of runing basic stats on entire dataframe:
+
+`mtcars`
+
+`var(mtcars)`
+
+`cor(mtcars)`
+
+`summary(mtcars)`
+
+```{r df_stats, exercise = TRUE}
+
+
+```
+
+
+## Selecting Dataframe Columns by Position
+
+`dfrm[[n]]`
+
+Returns one column—specifically, the nth column of dfrm.
+     
+To select one or more columns and package them in a data frame, use the following
+sublist expressions:
+
+`dfrm[n]`
+
+Returns a data frame consisting solely of the nth column of dfrm.
+
+`dfrm[c(n1, n2, ..., nk)]`
+
+Returns a data frame built from the columns in positions n1, n2, ..., nk of dfrm.
+
+You can use matrix-style subscripting to select one or more columns:
+
+`dfrm[, n]`
+
+Returns the nth column (assuming that n contains exactly one value).
+
+`dfrm[, c(n1, n2, ..., nk)]`
+
+Returns a data frame built from the columns in positions n1, n2, ..., nk.
+
+`mtcars[c(4, 5, 6)]`
+
+`mtcars[c(4:6)]`
+
+`mtcars[-4]`
+
+`mtcars[c(-4:-6)]`
+
+`mtcars[, 4]`
+
+`mtcars[1:5, 4]`
+
+`mtcars[1:5, 4:6]`
+
+`mtcars[1:5, c(1, 4:6, 10)]`
+
+```{r col_pos, exercise = TRUE}
+
+```
+
+To select a single column, use one of these list expressions:
+
+`dfrm[["name"]]`
+
+Returns one column, the column called name.
+
+`dfrm$name`
+
+Returns the same, but presented in different syntax.
+
+To select one or more columns and package them in a data frame, use these list
+expressions:
+
+`dfrm["name"]`
+
+Selects one column and packages it inside a data frame object.
+
+`dfrm[c("name1", "name2", ..., "namek")]`
+
+Selects several columns and packages them in a data frame.
+
+You can use matrix-style subscripting to select one or more columns:
+
+`dfrm[, "name"]`
+
+Returns the named column.
+
+`dfrm[, c("name1", "name2", ..., "namek")]`
+
+Selects several columns and packages them in a data frame.
+
+## Selecting Dataframe Columns by Name
+
+`mtcars[["hp"]]`
+
+`mtcars$hp`
+
+`mtcars["hp"] #dataframe`
+
+`mtcars[c("hp", "wt", "vs", "disp")] #eventhough the are out of order`
+
+`mtcars[, "hp"] #matrix`
+
+`mtcars[, c("hp", "wt", "vs", "disp")]`
+
+`mtcars[, c("hp", "wt", "vs", "disp")] %>% var()`
+
+`mtcars[, c("hp", "wt", "vs", "disp")] %>% cor()`
+
+```{r select_col, exercise = TRUE}
+
+
+```
+
+
+
+
+

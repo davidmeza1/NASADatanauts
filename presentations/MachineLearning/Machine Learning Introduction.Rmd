@@ -1,0 +1,91 @@
+---
+title: "Machine Learning Introduction"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Machine Learning with caret
+
+The caret package (short for classification and regression training) contains functions to streamline the model training process for complex regression and classification problems. The package utilizes a number of R packages but tries not to load them all at package start-up1. The package “suggests” field includes 27 packages. caret loads packages as needed and assumes that they are installed. Install caret using `install.packages("caret", dependencies = c("Depends", "Suggests"))` to ensure that all the needed packages are installed.
+
+[The caret Package](http://topepo.github.io/caret/index.html) has several functions that attempt to streamline the model building and evaluation process, as well as feature selection and other techniques.
+
+### Exercise 
+
+The R caret package will make your modeling life easier – guaranteed. caret allows you to test out different models with very little change to your code and throws in near-automatic cross validation-bootstrapping and parameter tuning for free.
+
+For example, below we show two nearly identical lines of code. Yet they run entirely different models. In the first, method = "lm" tells caret to run a traditional linear regression model. In the second line method = "rf" tells caret to run a random forest model using the same data. One tiny syntax change and you run an entirely new type of model.
+
+`library(caret)`
+
+*In R, the `annual_pm ~ .` means use annual_pm as the model response*
+*and use all other variables as predictors*
+
+`lm1 <- train(annual_pm ~ ., data = air, method = "lm")`
+`rf1 <- train(annual_pm ~ ., data = air, method = "rf")`
+
+
+```{r two-plus-two, exercise=TRUE, exercise.eval=TRUE}
+library(caret)
+lm1 <- train(annual_pm ~ ., data = air, method = "lm")
+rf1 <- train(annual_pm ~ ., data = air, method = "rf")
+```
+
+### Exercise with Code
+
+One of the most powerful aspects of the caret package is the consistent modeling syntax.
+By simply changing the method argument, you can easily cycle between, for example, 
+running a linear model, a gradient boosting machine model and a LASSO model. In total, 
+there are 233 different models available in caret. 
+
+```{r add-function, exercise=TRUE, exercise.lines = 5}
+add <- function() {
+  
+}
+```
+
+## Topic 2
+
+### Exercise with Hint
+
+*Here's an exercise where the chunk is pre-evaulated via the `exercise.eval` option (so the user can see the default output we'd like them to customize). We also add a "hint" to the correct solution via the chunk immediate below labeled `print-limit-hint`.*
+
+Modify the following code to limit the number of rows printed to 5:
+
+```{r print-limit, exercise=TRUE, exercise.eval=TRUE}
+mtcars
+```
+
+```{r print-limit-hint}
+head(mtcars)
+```
+
+### Quiz
+
+*You can include any number of single or multiple choice questions as a quiz. Use the `question` function to define a question and the `quiz` function for grouping multiple questions together.*
+
+Some questions to verify that you understand the purposes of various base and recommended R packages:
+
+```{r quiz}
+quiz(
+  question("Which package contains functions for installing other R packages?",
+    answer("base"),
+    answer("tools"),
+    answer("utils", correct = TRUE),
+    answer("codetools")
+  ),
+  question("Which of the R packages listed below are used to create plots?",
+    answer("lattice", correct = TRUE),
+    answer("tools"),
+    answer("stats"),
+    answer("grid", correct = TRUE)
+  )
+)
+```
+

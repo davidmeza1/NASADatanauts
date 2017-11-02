@@ -1,0 +1,10 @@
+name: BeginningDashBoardExample
+title: BeginningDashBoardExample
+account: dmeza
+server: jsc-sma-cent01
+appId: 26
+bundleId: 33
+url: http://jsc-sma-cent01:3939/content/26/
+when: 1490628225.70504
+asMultiple: FALSE
+asStatic: FALSE

@@ -6,7 +6,7 @@
 library(shiny)
 library(shinydashboard)
 
-ui <- dashboardPage(
+ui <- dashboardPage(skin = "green",
      dashboardHeader(title = "Basic dashboard"),
      dashboardSidebar(),
      dashboardBody(

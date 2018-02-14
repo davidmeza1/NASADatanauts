@@ -15,7 +15,6 @@ library(tidyr)
 library(stringr)
 library(forcats)
 library(DT)
-#library(wordcloud)
 library(crosstalk)
 library(wordcloud2)
 ```
@@ -27,22 +26,7 @@ Column {}
 ```{r}
 load("datanauts.Rdata")
 
-#leaflet() %>%
-#    addTiles() %>%
-#   setView(-2.237430, 53.48095, zoom = 2) %>%
-#    addCircleMarkers(data = datanauts, lng =~ lon, lat = ~ lat, group = "All Members", color = "blue") %>% 
-#    addCircleMarkers(data = filter(datanauts, class == "Founding Class (2015)"), lng = ~ lon, lat = ~ lat, group = "Founding Class", color = "green") %>% 
-#    addCircleMarkers(data = filter(datanauts, class == "2016"), lng = ~ lon, lat = ~ lat, group = "2016", color = "purple") %>% 
-#    addCircleMarkers(data = filter(datanauts, class == "Spring 2017"), lng = ~ lon, lat = ~ lat, group = "Spring 2017", color = "red") %>% 
-#    addCircleMarkers(data = filter(datanauts, class == "Fall 2017"), lng = ~ lon, lat = ~ lat, group = "Fall 2017", color = "cyan") %>% 
-#    hideGroup("Founding Class") %>% 
-#    hideGroup("2016") %>% 
-#    hideGroup("Spring 2017") %>% 
-#    hideGroup("Fall 2017") %>%
-#    addLayersControl(baseGroups = "Members", overlayGroups = c("All Members", "Founding Class", "2016", "Spring 2017", "Fall 2017"),
-#                     options = layersControlOptions(collapsed = FALSE))
-
-
+# Creates the shared df accross leaflet and DT
 shared_datanauts <- SharedData$new(select(datanauts, name, location, industry, class, lon, lat))
 filter_select("NDClass", "Datanaut Class Map", shared_datanauts, group = ~class, allLevels = TRUE)
 
@@ -70,21 +54,26 @@ Column {}
 ###
 
 ```{r}
-# datatable(datanauts %>% select(name, location, industry, class))
-#filter_select("NDClass", "Datanaut Class", shared_datanauts, group = ~class, allLevels = TRUE)
+# Displays the datatable 
 datatable(shared_datanauts)
 ```
 
 ###
 
 ```{r}
+# Creates subset of the member df for is on the wordcloud
 datanaut_sub <- datanauts %>% select(name, location, industry, class)
+# separates the multiple observations in the industry column into its own row
 datanaut_sub <- datanaut_sub %>% separate_rows(industry, sep = ",")
+# Trims whitespace to so factors are equivalent
 datanaut_sub$industry <- str_trim(datanaut_sub$industry)
+# Convert industry to factor
 datanaut_sub$industry <- factor(datanaut_sub$industry)
-
+# Ceates df of word and frequency
 industry_count <- fct_count(datanaut_sub$industry, sort = TRUE)
-
+# creates word cloud, size = .5 is need to display Computer Science since
+# it is propotional greater that all the other choices. Otherwise it would be to 
+# large to display
 wordcloud2(industry_count, size = .5, color = "random-light", backgroundColor = "grey")
 
 ```

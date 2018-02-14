@@ -1,0 +1,25 @@
+#********************************************************************
+# Graph Aware Plugins
+#********************************************************************
+com.graphaware.runtime.enabled=true
+
+#UIDM becomes the module ID:
+com.graphaware.module.UIDM.1=com.graphaware.module.uuid.UuidBootstrapper
+
+#optional, default is uuid:
+com.graphaware.module.UIDM.uuidProperty=uuid
+
+#optional, default is false:
+com.graphaware.module.UIDM.stripHyphens=false
+
+#optional, default is all nodes:
+com.graphaware.module.UIDM.node=hasLabel('Label1') || hasLabel('Label2')
+
+#optional, default is no relationships:
+com.graphaware.module.UIDM.relationship=isType('Type1')
+
+#optional, default is uuidIndex
+com.graphaware.module.UIDM.uuidIndex=uuidIndex
+
+#optional, default is uuidRelIndex
+com.graphaware.module.UIDM.uuidRelationshipIndex=uuidRelIndex

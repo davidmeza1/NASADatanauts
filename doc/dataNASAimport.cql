@@ -8,7 +8,7 @@ UNWIND value.dataset AS dbs
 // The field is split on spaces and commas, this works but does have some issues
 WITH dbs, apoc.text.split(dbs.spatial, "[\\s,+]",3) AS geo
 //Create dataset node and set properties
-MERGE (dataset:Dataset {id:dbs.identifier}) ON CREATE
+MERGE (dataset:Dataset {name:dbs.identifier}) ON CREATE
 	SET dataset.oid = dbs.`_id.$oid`,
 	dataset.type = dbs.`@type`,
 	dataset.accessLevel = dbs.accessLevel,
@@ -28,7 +28,15 @@ MERGE (dataset:Dataset {id:dbs.identifier}) ON CREATE
 	dataset.title = dbs.title,
 	dataset.license = dbs.license
 
-//Create contact point node and se property
+// My attempt to create a new relationship without rerunning the entire code
+// I noticed that there was a item calle "isPartOf" on some of the entries
+// This was to show the dataset was part of a larger dataset
+// I need to create a new realtionship in the DB
+FOREACH(ignoreMe IN CASE WHEN trim(dbs.isPartOf) <> " " THEN [1] ELSE [] END | MERGE (aggregated_dataset:Dataset {name:dbs.isPartOf}) MERGE (dataset)-[:isPartOf]->(aggregated_dataset))
+
+
+
+//Create contact point node and set property
 MERGE (contactPoint:ContactPoint {name:dbs.contactPoint.fn}) ON CREATE 
 	SET contactPoint.email = dbs.contactPoint.hasEmail
 // Create the relationship betweem the dataset and Point of Contact
@@ -43,6 +51,9 @@ FOREACH(pubParent in dbs.publisher.subOrganizationOf.name | MERGE (parent:Publis
 FOREACH(pubParent2 in dbs.publisher.subOrganizationOf.subOrganizationOf.name | MERGE (grandparent:PublisherGrandParent {name:pubParent2}) MERGE (parent)-[:subOrganizationOf]->(grandparent))
 
 FOREACH(t in dbs.theme | MERGE (theme:Theme {name:t}) MERGE (dataset)-[:IN_THEME]->(theme) MERGE (keyword)-[:IN_THEME]->(theme))
+
+
+
 
 /////////////////////////////////////////////
 // Do not run with import script ///////////

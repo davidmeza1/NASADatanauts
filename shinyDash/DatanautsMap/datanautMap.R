@@ -72,6 +72,23 @@ wordcloud2(industry_count, size = .5, color = "random-light", backgroundColor = 
 # Could also have done
 # wordcloud2(fct_count(datanaut_sub$industry, sort = TRUE), size = .5, color = "random-light", backgroundColor = "grey")
 
+# Network Map
+write.csv(datanaut_sub, file = "datanautSub.csv")
+library(networkD3)
+
+forceNetwork(Links = MisLinks, Nodes = MisNodes, Source = "source",
+             Target = "target", Value = "value", NodeID = "name",
+             Nodesize = "size", Group = "group", opacity = 0.4)
+
+forceNetwork(Links = datanaut_sub, Nodes = datanaut_sub, Source = "name",
+             Target = "industry", NodeID = "name",
+            Group = "class", opacity = 0.4)
 
 
-
+library(visNetwork)
+nodes <- data.frame(id = 1:6, title = paste("node", 1:6), 
+                    shape = c("dot", "square"),
+                    size = 10:15, color = c("blue", "red"))
+edges <- data.frame(from = 1:5, to = c(5, 4, 6, 3, 3))
+visNetwork(nodes, edges) %>%
+    visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE)

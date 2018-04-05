@@ -1,0 +1,202 @@
+---
+title: "Data Transformation"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+```{r setup, include = FALSE}
+library(learnr)
+library(nycflights13)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE)
+flights <- flights
+```
+
+Using the flights dataframe from the nycflights13 package, complete the following exercises.
+The flights dataframe has been loaded for you. Below are the variable names.
+
+```{r}
+names(flights)
+```
+
+###  Filter Exercises
+
+1.  Find all flights that
+    1. Had an arrival delay of two or more hours
+    
+```{r filter1, exercise = TRUE}
+
+
+```
+
+```{r filter1-solution}
+filter(flights, arr_delay >= 120)
+#OR
+flights %>% 
+     filter(arr_delay >= 120)
+```
+      
+    2. Flew to Houston (`IAH` or `HOU`)
+    
+```{r filter2, exercise = TRUE}
+
+
+```
+ 
+   
+```{r filter2-solution}
+filter(flights, dest == "IAH" | dest == "HOU")
+```
+
+    3. Were operated by United, American, or Delta
+    
+```{r filter3, exercise = TRUE}
+
+```
+
+```{r filter3-solution}
+filter(flights, carrier %in% c("UA", "AA", "DL"))
+```
+
+    4. Departed in summer (July, August, and September)
+    
+```{r filter4, exercise = TRUE}
+
+```
+
+```{r filter4-solution}
+filter(flights, month %in% c(7, 8, 9))
+```
+
+    5. Arrived more than two hours late, but didn't leave late
+    
+```{r filter5, exercise = TRUE}
+
+```
+
+```{r filter5-solution}
+filter(flights, arr_delay > 120 & dep_delay <= 0)
+```
+
+    6. Were delayed by at least an hour, but made up over 30 minutes in flight
+    
+```{r filter6, exercise = TRUE}
+
+```
+
+```{r filter6-hint-1} 
+# For the second condition, you will need to test for a difference 
+# between depart and arrival time.
+```
+
+```{r filter6-hint-2}
+filter(flights, dep_delay >= 60, arr_delay - dep_delay <= -30)
+```
+
+    7. Departed between midnight and 6am (inclusive)
+    
+```{r filter7, exercise = TRUE}
+
+```
+
+```{r filter7-solution}
+filter(flights, dep_time >= 0 & dep_time <= 0600)
+```
+
+2.  Another useful dplyr filtering helper is `between()`. What does it do?
+    Can you use it to simplify the code needed to answer the previous 
+    challenges?
+    
+```{r filter8, exercise = TRUE}
+
+```
+
+```{r filter8-solution}
+filter(flights, between(dep_time, 0, 0600))
+```
+
+3.  How many flights have a missing `dep_time`? What other variables are 
+    missing? What might these rows represent?
+    **Note: Review the funtions in the dplyr package**
+
+```{r filter9, exercise = TRUE}
+
+
+
+
+```
+
+```{r filter9-solution}
+flights %>% count(is.na(dep_time))
+```
+
+4.  Why is `NA ^ 0` not missing? Why is `NA | TRUE` not missing?
+    Why is `FALSE & NA` not missing? Can you figure out the general
+    rule?  (`NA * 0` is a tricky counterexample!)
+    
+### Arrange Exercises
+
+1.  How could you use `arrange()` to sort all missing values to the start?
+    (Hint: use `is.na()`).
+    
+1.  Sort `flights` to find the most delayed flights. Find the flights that
+    left earliest.
+
+1.  Sort `flights` to find the fastest flights.
+
+1.  Which flights travelled the longest? Which travelled the shortest?
+
+### Select Exercises
+
+1.  Brainstorm as many ways as possible to select `dep_time`, `dep_delay`,
+    `arr_time`, and `arr_delay` from `flights`.
+    
+1.  What happens if you include the name of a variable multiple times in
+    a `select()` call?
+  
+1.  What does the `one_of()` function do? Why might it be helpful in conjunction
+    with this vector?
+    
+    ```{r}
+    vars <- c("year", "month", "day", "dep_delay", "arr_delay")
+    ```
+    
+1.  Does the result of running the following code surprise you?  How do the
+    select helpers deal with case by default? How can you change that default?
+
+    ```{r, eval = FALSE}
+    select(flights, contains("TIME"))
+    ```
+    
+### Exercises
+
+```{r, eval = FALSE, echo = FALSE}
+flights <- flights %>% mutate(
+  dep_time = hour * 60 + minute,
+  arr_time = (arr_time %/% 100) * 60 + (arr_time %% 100),
+  airtime2 = arr_time - dep_time,
+  dep_sched = dep_time + dep_delay
+)
+
+ggplot(flights, aes(dep_sched)) + geom_histogram(binwidth = 60)
+ggplot(flights, aes(dep_sched %% 60)) + geom_histogram(binwidth = 1)
+ggplot(flights, aes(air_time - airtime2)) + geom_histogram()
+```
+
+1.  Currently `dep_time` and `sched_dep_time` are convenient to look at, but
+    hard to compute with because they're not really continuous numbers. 
+    Convert them to a more convenient representation of number of minutes
+    since midnight.
+    
+1.  Compare `air_time` with `arr_time - dep_time`. What do you expect to see?
+    What do you see? What do you need to do to fix it?
+    
+1.  Compare `dep_time`, `sched_dep_time`, and `dep_delay`. How would you
+    expect those three numbers to be related?
+
+1.  Find the 10 most delayed flights using a ranking function. How do you want 
+    to handle ties? Carefully read the documentation for `min_rank()`.
+
+1.  What does `1:3 + 1:10` return? Why?
+
+1.  What trigonometric functions does R provide?
+

@@ -1,5 +1,5 @@
 ---
-title: "NASA Datanuats"
+title: "NASA Datanauts"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
@@ -28,7 +28,7 @@ load("datanauts.Rdata")
 
 # Creates the shared df accross leaflet and DT
 shared_datanauts <- SharedData$new(select(datanauts, name, location, industry, class, lon, lat))
-filter_select("NDClass", "Datanaut Class Map", shared_datanauts, group = ~class, allLevels = TRUE)
+filter_select("NDClass", "Click in Box tp Filter by Datanaut Class", shared_datanauts, group = ~class, allLevels = TRUE)
 
 leaflet() %>%
     setView(-82.831040,35.88904, zoom = 2) %>% 

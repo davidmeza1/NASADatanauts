@@ -1,0 +1,10 @@
+name: DataVisualization
+title: DataVisualization
+account: dmeza
+server: connect.jsc.nasa.gov
+appId: 40
+bundleId: 66
+url: http://jsc-sma-cent01.ndc.nasa.gov:3939/content/40/
+when: 1495035744.39584
+asMultiple: FALSE
+asStatic: FALSE

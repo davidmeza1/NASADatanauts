@@ -104,14 +104,6 @@ FOREACH(t in dbs.theme | MERGE (theme:Theme {name:t}) MERGE (dataset)-[:IN_THEME
 
 
 
-
-
-
-
-
-
-
-
 // Closeness Centrality Procedure
 MATCH (keyword:Keyword)
 WHERE keyword.id %2 = 0
@@ -119,3 +111,5 @@ WITH collect(keyword) AS nodes
 CALL apoc.algo.closeness(['TYPE'],nodes,'INCOMING') YIELD keyword, score
 RETURN keyword, score
 ORDER BY score DESC
+
+

@@ -1,3 +1,8 @@
+dbms.security.procedures.unrestricted=apoc.*,algo.*,ga.*
+dbms.security.procedures.whitelist=apoc.*,algo.*,ga.*,ga.nlp.*
+
+
+
 #********************************************************************
 # Graph Aware Plugins
 #********************************************************************
@@ -23,3 +28,8 @@ com.graphaware.module.UIDM.uuidIndex=uuidIndex
 
 #optional, default is uuidRelIndex
 com.graphaware.module.UIDM.uuidRelationshipIndex=uuidRelIndex
+
+#NLP
+#com.graphaware.module.NLP.1=com.graphaware.nlp.module.NLPBootstrapper
+#com.graphaware.module.NLP.2=com.graphaware.nlp.module.NLPBootstrapper
+

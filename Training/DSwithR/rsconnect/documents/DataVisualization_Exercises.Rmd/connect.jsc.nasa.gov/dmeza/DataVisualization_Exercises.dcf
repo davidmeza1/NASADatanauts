@@ -1,0 +1,10 @@
+name: DataVisualization_Exercises
+title: DataVisualization_Exercises
+account: dmeza
+server: connect.jsc.nasa.gov
+appId: 41
+bundleId: 67
+url: http://jsc-sma-cent01.ndc.nasa.gov:3939/content/41/
+when: 1495036554.41739
+asMultiple: FALSE
+asStatic: FALSE

@@ -16,7 +16,7 @@ output:
 options(htmltools.dir.version = FALSE)
 ```
 
-background-image: url(images/JSCDSD_GradedTrans.png)
+background-image: url(../images/JSCDSD_GradedTrans.png)
 
 ???
 
@@ -381,7 +381,7 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
   geom_smooth(data = filter(mpg, class == "subcompact"), se = FALSE)
 ```
 
----
+
 
 
 

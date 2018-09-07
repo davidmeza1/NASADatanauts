@@ -3,9 +3,9 @@ library(arulesViz)
 library(readr)
 
 # Collect the Data
-groceries_df <- read_csv("~/Documents/OneDrive/GitHub/NASADatanauts/presentations/MachineLearning/code/chapter 8/groceries.csv", 
+groceries_df <- read_csv("Training/MachineLearning/code/chapter 8/groceries.csv", 
                       col_names = FALSE)
-groceries <- read.transactions("~/Documents/OneDrive/GitHub/NASADatanauts/presentations/MachineLearning/code/chapter 8/groceries.csv", sep = ",")
+groceries <- read.transactions("~Training/MachineLearning/code/chapter 8/groceries.csv", sep = ",")
 
 #Explore the Data
 summary(groceries)

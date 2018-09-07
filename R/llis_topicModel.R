@@ -42,6 +42,7 @@ lesson_dtm <- word_counts %>%
 
 lesson_dtm
 
+set.seed(0622)
 system.time(lesson_lda <- LDA(lesson_dtm, k = 27, control = list(seed = 0622)))
 # user  system elapsed 
 # 74.078   0.408  75.550

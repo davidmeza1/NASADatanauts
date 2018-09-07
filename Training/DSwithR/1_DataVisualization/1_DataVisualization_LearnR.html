@@ -48,28 +48,43 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <div id="section-introduction" class="section level2">
 <h2>Introduction</h2>
 <p>You will learn how to visualise your data using ggplot2. R has several systems for making graphs, but <a href="http://ggplot2.tidyverse.org/">ggplot2</a> is one of the most elegant and most versatile. ggplot2 implements the grammar of graphics, a coherent system for describing and building graphs. With ggplot2, you can do more faster by learning one system and applying it in many places.</p>
+<pre class="r"><code>theme_set(theme_bw())
+p &lt;- ggplot(gapminder, aes(gdpPercap, lifeExp, color = continent, frame = year)) +
+    geom_point(aes(size = pop)) +
+    geom_text(aes(label = country),vjust = 0, nudge_y = 0.5, check_overlap = TRUE) +
+    theme(legend.position = &quot;none&quot;) +
+    scale_x_log10() +
+    scale_size(range = c(0,30)) +
+    labs(x = &quot;GDP Per Capita&quot;, y = &quot;Life Expectancy&quot;)
+    
+ 
+gganimate(p, filename = &quot;images/gapminder.gif&quot;)</code></pre>
+<div class="figure">
+<img src="images/gapminder.gif" />
+
+</div>
 </div>
 <div id="section-prerequisites" class="section level2">
 <h2>Prerequisites</h2>
 <pre class="r"><code># install.packages(&quot;tidyverse&quot;)
 library(tidyverse)</code></pre>
 <pre><code>## Warning: package &#39;tidyverse&#39; was built under R version 3.4.2</code></pre>
-<pre><code>## ── Attaching packages ───────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
-<pre><code>## ✔ ggplot2 2.2.1          ✔ purrr   0.2.4.9000
-## ✔ tibble  1.4.2          ✔ dplyr   0.7.4     
-## ✔ tidyr   0.8.0          ✔ stringr 1.2.0     
-## ✔ readr   1.1.1          ✔ forcats 0.2.0</code></pre>
+<pre><code>## ── Attaching packages ───────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>## ✔ tibble  1.4.2          ✔ purrr   0.2.4.9000
+## ✔ tidyr   0.8.0          ✔ dplyr   0.7.4     
+## ✔ readr   1.1.1          ✔ stringr 1.2.0     
+## ✔ tibble  1.4.2          ✔ forcats 0.2.0</code></pre>
 <pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.4.3</code></pre>
 <pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.4.3</code></pre>
 <pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.4.2</code></pre>
-<pre><code>## ── Conflicts ──────────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+<pre><code>## ── Conflicts ──────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
 </div>
 <div id="section-mpg-data-frame" class="section level2">
 <h2>mpg data frame</h2>
 <p>Let’s use our first graph to answer a question: Do cars with big engines use more fuel than cars with small engines? You probably already have an answer, but try to make your answer precise.</p>
-<p>What does the relationship between engine size and fuel efficiency look like?</p>
+<p><strong><code>What does the relationship between engine size and fuel efficiency look like?</code></strong></p>
 <p>Is it positive? Negative? Linear? Nonlinear?</p>
 <pre class="r"><code>mpg</code></pre>
 <div data-pagedtable="false">
@@ -88,7 +103,7 @@ library(tidyverse)</code></pre>
 <p>To plot, run this code to put the displ on the x-axis and hwy on the y-axis:</p>
 <pre class="r"><code>ggplot(data = mpg) + geom_point(mapping = aes(x = displ, y = hwy))</code></pre>
 <p>It should look like this:</p>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-4-1.png" width="624" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-5-1.png" width="624" /></p>
 </div>
 <div id="section-ggplot-graphing-template" class="section level2">
 <h2>ggplot graphing template</h2>
@@ -99,25 +114,25 @@ library(tidyverse)</code></pre>
 <div id="section-aesthetic-mappings" class="section level2">
 <h2>Aesthetic Mappings</h2>
 <p>In the plot below, one group of points (highlighted in red) seems to fall outside of the linear trend. These cars have a higher mileage than you might expect. How can you explain these cars?</p>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-6-1.png" width="624" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-7-1.png" width="624" /></p>
 </div>
 <div id="section-adding-aesthics-to-enhance-plot" class="section level2">
 <h2>Adding aesthics to enhance plot</h2>
 <p>You can add a third variable, like <code>class</code>, to a two dimensional scatterplot by mapping it to an <strong>aesthetic</strong>. An aesthetic is a visual property of the objects in your plot.</p>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-7-1.png" width="624" style="display: block; margin: auto;" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-8-1.png" width="624" style="display: block; margin: auto;" /></p>
 <p>You can convey information about your data by mapping the aesthetics in the plot to variables in your dataset.</p>
 <pre class="r"><code>ggplot(data = mpg) +
 geom_point(mapping = aes(x = displ, y = hwy, color = class))</code></pre>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-8-1.png" width="1056" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-9-1.png" width="768" /></p>
 <p>In the above example, we mapped <strong>class</strong> to the color aesthetic, but we could have mapped <strong>class</strong> to the size aesthetic in the same way. In this case, the exact size of each point would reveal its class affiliation. We get a <em>warning</em> here, because mapping an unordered variable (<code>class</code>) to an ordered aesthetic (<code>size</code>) is not a good idea.</p>
 <pre class="r"><code>ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy, size = class))</code></pre>
 <pre><code>## Warning: Using size for a discrete variable is not advised.</code></pre>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-9-1.png" width="864" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-10-1.png" width="768" /></p>
 <p>Or we could have mapped <strong>class</strong> to the <strong><em>alpha</em></strong> aesthetic, which controls the transparency of the points or the shape of the points.</p>
 <pre class="r"><code>ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy, alpha = class))</code></pre>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-10-1.png" width="864" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-11-1.png" width="768" /></p>
 <p>Or the shape of the points.</p>
 <pre class="r"><code>ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy, shape = class))</code></pre>
@@ -125,13 +140,13 @@ geom_point(mapping = aes(x = displ, y = hwy, color = class))</code></pre>
 ## because more than 6 becomes difficult to discriminate; you have 7.
 ## Consider specifying shapes manually if you must have them.</code></pre>
 <pre><code>## Warning: Removed 62 rows containing missing values (geom_point).</code></pre>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-11-1.png" width="864" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-12-1.png" width="768" /></p>
 <p>For each aesthetic, you use aes() to associate the name of the aesthetic with a variable to display. The aes() function gathers together each of the aesthetic mappings used by a layer and passes them to the layer’s mapping argument.</p>
 <p>The syntax highlights a useful insight about x and y: the x and y locations of a point are themselves aesthetics, visual properties that you can map to variables to display information about the data.</p>
 <p>You can also set the aesthetic properties of your geom manually. For example, we can make all of the points in our plot blue:</p>
 <pre class="r"><code>ggplot(data = mpg) +
 geom_point(mapping = aes(x = displ, y = hwy), color = &quot;blue&quot;)</code></pre>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-12-1.png" width="624" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-13-1.png" width="624" /></p>
 <p>What is the difference between these two groups of code?</p>
 <pre class="r"><code>ggplot(data = mpg) +
 geom_point(mapping = aes(x = displ, y = hwy, color = class))</code></pre>
@@ -151,18 +166,15 @@ geom_point(mapping = aes(x = displ, y = hwy), color = &quot;blue&quot;)</code></
 <pre class="r"><code>ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy)) + 
   facet_wrap(~ class, nrow = 2)</code></pre>
-<pre class="r"><code>ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy)) + 
-  facet_wrap(~ class, nrow = 2)</code></pre>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-13-1.png" width="624" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-14-1.png" width="624" /></p>
 <p>To facet your plot on the combination of two variables, add <strong><code>facet_grid()</code></strong> to your plot call. The first argument of <strong><code>facet_grid()</code></strong> is also a formula. This time the formula should contain two variable names separated by a <strong><code>~</code></strong>.</p>
 <pre class="r"><code>ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy)) + 
   facet_grid(drv ~ cyl)</code></pre>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-14-1.png" width="624" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-15-1.png" width="624" /></p>
 <p>If you prefer to not facet in the rows or columns dimension, use a <strong><code>.</code></strong> instead of a variable name, e.g. <strong><code>+ facet_grid(. ~ cyl)</code></strong>.</p>
 <p>How are these two plots similar?</p>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-15-1.png" width="50%" /><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-15-2.png" width="50%" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-16-1.png" width="50%" /><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-16-2.png" width="50%" /></p>
 <p>Both plots contain the same x variable, the same y variable, and both describe the same data. But the plots are not identical. Each plot uses a different visual object to represent the data. In ggplot2 syntax, we say that they use different <strong>geoms</strong>.</p>
 <p>A <strong>geom</strong> is the geometrical object that a plot uses to represent data. People often describe plots by the type of geom that the plot uses. For example, bar charts use bar geoms, line charts use line geoms, boxplots use boxplot geoms, and so on. Scatterplots break the trend; they use the point geom.</p>
 <p>To change the geom in your plot, change the geom function that you add to <strong><code>ggplot()</code></strong>. For instance, to make the plots above, you can use this code:</p>
@@ -174,7 +186,7 @@ ggplot(data = mpg) +
 <p>Every geom function in ggplot2 takes a <code>mapping</code> argument. However, not every aesthetic works with every geom. You could set the shape of a point, but you couldn’t set the “shape” of a line. On the other hand, you <em>could</em> set the linetype of a line. <code>geom_smooth()</code> will draw a different line, with a different linetype, for each unique value of the variable that you map to linetype.</p>
 <pre class="r"><code>ggplot(data = mpg) + 
   geom_smooth(mapping = aes(x = displ, y = hwy, linetype = drv))</code></pre>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-17-1.png" width="624" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-18-1.png" width="624" /></p>
 <p>Here <code>geom_smooth()</code> separates the cars into three lines based on their <code>drv</code> value, which describes a car’s drivetrain. One line describes all of the points with a <code>4</code> value, one line describes all of the points with an <code>f</code> value, and one line describes all of the points with an <code>r</code> value. Here, <code>4</code> stands for four-wheel drive, <code>f</code> for front-wheel drive, and <code>r</code> for rear-wheel drive.</p>
 <p>If this sounds strange, we can make it more clear by overlaying the lines on top of the raw data and then coloring everything according to <code>drv</code>.</p>
 <p>Many geoms, like <code>geom_smooth()</code>, use a single geometric object to display multiple rows of data. For these geoms, you can set the <code>group</code> aesthetic to a categorical variable to draw multiple objects. ggplot2 will draw a separate object for each unique value of the grouping variable. In practice, ggplot2 will automatically group the data for these geoms whenever you map an aesthetic to a discrete variable (as in the <code>linetype</code> example). It is convenient to rely on this feature because the group aesthetic by itself does not add a legend or distinguishing features to the geoms.</p>
@@ -188,30 +200,33 @@ ggplot(data = mpg) +
   geom_smooth(
     mapping = aes(x = displ, y = hwy, color = drv),
     show.legend = FALSE</code></pre>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-18-1.png" width="33%" /><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-18-2.png" width="33%" /><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-18-3.png" width="33%" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-19-1.png" width="33%" /><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-19-2.png" width="33%" /><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-19-3.png" width="33%" /></p>
 <p>To display multiple geoms in the same plot, add multiple geom functions to <code>ggplot()</code>:</p>
 <pre class="r"><code>ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy)) +
   geom_smooth(mapping = aes(x = displ, y = hwy))</code></pre>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-19-1.png" width="624" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-20-1.png" width="624" /></p>
 <p>This, however, introduces some duplication in our code. Imagine if you wanted to change the y-axis to display <code>cty</code> instead of <code>hwy</code>. You’d need to change the variable in two places, and you might forget to update one. You can avoid this type of repetition by passing a set of mappings to <code>ggplot()</code>. ggplot2 will treat these mappings as global mappings that apply to each geom in the graph. In other words, this code will produce the same plot as the previous code:</p>
 <pre class="r"><code>ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
   geom_point() + 
   geom_smooth()</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39;</code></pre>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-20-1.png" width="624" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-21-1.png" width="624" /></p>
 <p>If you place mappings in a geom function, ggplot2 will treat them as local mappings for the layer. It will use these mappings to extend or overwrite the global mappings <em>for that layer only</em>. This makes it possible to display different aesthetics in different layers.</p>
 <pre class="r"><code>ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
   geom_point(mapping = aes(color = class)) + 
   geom_smooth()</code></pre>
-<p><img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-21-1.png" width="624" /></p>
+<p><img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-22-1.png" width="624" /></p>
 <p>You can use the same idea to specify different <code>data</code> for each layer. Here, our smooth line displays just a subset of the <code>mpg</code> dataset, the subcompact cars. The local data argument in <code>geom_smooth()</code> overrides the global data argument in <code>ggplot()</code> for that layer only.</p>
 <pre class="r"><code>ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
   geom_point(mapping = aes(color = class)) + 
   geom_smooth(data = filter(mpg, class == &quot;subcompact&quot;), se = FALSE)</code></pre>
-<img src="1_DataVisualization_LearnR_files/figure-html4/unnamed-chunk-22-1.png" width="624" /> 
+<img src="1_DataVisualization_LearnR_files/figure-html/unnamed-chunk-23-1.png" width="624" /> 
 <script type="application/shiny-prerendered" data-context="server-start">
 options(htmltools.dir.version = FALSE)
+library(gapminder)
+library(ggplot2)
+library(gganimate)
 </script>
  <!--html_preserve-->
 <script type="application/shiny-prerendered" data-context="dependencies">

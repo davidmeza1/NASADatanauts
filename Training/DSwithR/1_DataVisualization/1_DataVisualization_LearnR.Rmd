@@ -7,6 +7,9 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
+library(gapminder)
+library(ggplot2)
+library(gganimate)
 ```
 
 ## Introduction
@@ -15,6 +18,22 @@ You will learn how to visualise your data using ggplot2. R has several systems f
 graphs, but [ggplot2](http://ggplot2.tidyverse.org/) is one of the most elegant and most versatile. ggplot2 implements the grammar of
 graphics, a coherent system for describing and building graphs. With ggplot2, you can do more faster by
 learning one system and applying it in many places.
+
+```{r, eval=FALSE, fig.height=6, fig.width=10}
+theme_set(theme_bw())
+p <- ggplot(gapminder, aes(gdpPercap, lifeExp, color = continent, frame = year)) +
+    geom_point(aes(size = pop)) +
+    geom_text(aes(label = country),vjust = 0, nudge_y = 0.5, check_overlap = TRUE) +
+    theme(legend.position = "none") +
+    scale_x_log10() +
+    scale_size(range = c(0,30)) +
+    labs(x = "GDP Per Capita", y = "Life Expectancy")
+    
+ 
+gganimate(p, filename = "images/gapminder.gif")
+```
+
+![](images/gapminder.gif)
 
 ## Prerequisites
 
@@ -28,7 +47,7 @@ library(tidyverse)
 Let’s use our first graph to answer a question: Do cars with big engines use more fuel than cars with small
 engines? You probably already have an answer, but try to make your answer precise. 
 
-What does the relationship between engine size and fuel efficiency look like?
+**`What does the relationship between engine size and fuel efficiency look like?`**
 
 Is it positive? Negative? Linear? Nonlinear?
 
@@ -97,28 +116,28 @@ ggplot() +
 You can convey information about your data by mapping the aesthetics in the plot
 to variables in your dataset.
 
-```{r, fig.height=6, fig.width=11}
+```{r, fig.height=6, fig.width=8}
 ggplot(data = mpg) +
 geom_point(mapping = aes(x = displ, y = hwy, color = class))
 ```
 
 In the above example, we mapped **class** to the color aesthetic, but we could have mapped **class** to the size aesthetic in the same way. In this case, the exact size of each point would reveal its class affiliation. We get a _warning_ here, because mapping an unordered variable (`class`) to an ordered aesthetic (`size`) is not a good idea.
 
-```{r fig.height=4, fig.width=9}
+```{r fig.height=4, fig.width=8}
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy, size = class))
 ```
 
 Or we could have mapped **class** to the **_alpha_** aesthetic, which controls the transparency of the points or the shape of the points.
 
-```{r fig.height=6, fig.width=9}
+```{r fig.height=6, fig.width=8}
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy, alpha = class))
 ```
 
 Or the shape of the points.
 
-```{r fig.height=4, fig.width=9}
+```{r fig.height=4, fig.width=8}
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy, shape = class))
 ```
@@ -163,12 +182,6 @@ To facet your plot by a single variable, use **`facet_wrap()`**. The first argum
 of **`facet_wrap()`** should be a formula, which you create with **`~`** followed by a 
 variable name (here *"formula"* is the name of a data structure in R, not a synonym
 for *"equation"*). The variable that you pass to **`facet_wrap()`** should be discrete.
-
-```R
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy)) + 
-  facet_wrap(~ class, nrow = 2)
-```
 
 ```{r}
 ggplot(data = mpg) + 

@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ## Machine Learning with caret
 
 The caret package (short for classification and regression training) contains functions to streamline the model training process for complex regression and classification problems. The package utilizes a number of R packages but tries not to load them all at package start-up1. The package “suggests” field includes 27 packages. caret loads packages as needed and assumes that they are installed. Install caret using `install.packages("caret", dependencies = c("Depends", "Suggests"))` to ensure that all the needed packages are installed.
-
+data
 [The caret Package](http://topepo.github.io/caret/index.html) has several functions that attempt to streamline the model building and evaluation process, as well as feature selection and other techniques.
 
 ### Exercise 

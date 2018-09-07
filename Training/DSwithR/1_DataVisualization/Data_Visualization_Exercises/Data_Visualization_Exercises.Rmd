@@ -1,0 +1,228 @@
+---
+title: "Data Visualization Exercises"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Exercises for the Data Visualization Presentation
+
+## 1. Run ggplot(data = mpg). What do you see? Why?
+Click on Hint to get an explanation.
+
+```{r exer1, exercise = TRUE}
+ggplot(data = mpg)
+```
+
+<div id="exer1-hint">
+**Explanation**  The ggplot function is the first layer of your graphic. Its job
+is to create a blank canvas for you to create your masterpiece on. `data = mpg`
+tells ggplot you plan to use the mpg dataset for your graphic.
+</div>
+
+## 2. How many rows are in mpg? How many columns?
+
+```{r exer2, exercise = TRUE}
+
+```
+
+```{r vizquiz1, echo=FALSE}
+quiz(caption = "Quiz 1",
+    question("How many rows are in the mpg dataset?",
+             answer("230"),
+             answer("234", correct = TRUE),
+             answer("244"),
+             answer("236"),
+             allow_retry = TRUE,
+             random_answer_order = TRUE
+             ),
+    question("How many columns are in the mpg datasaet",
+             answer("12"),
+             answer("15"),
+             answer("11", correct = TRUE),
+             answer("10"),
+             allow_retry = TRUE,
+             random_answer_order = TRUE
+             )
+)
+```
+
+```{r exer2-solution}
+nrow(mpg)
+ncol(mpg)
+```
+
+## 3. What does the drv variable describe? Read the help for mpg to find out.
+
+```{r exer3, exercise = TRUE}
+
+```
+
+```{r exer3-solution}
+?mpg
+```
+
+## 4. Make a scatterplot of hwy vs cyl.
+
+```{r exer4, exercise = TRUE}
+
+```
+
+```{r exer4-hint-1}
+ggplot(mpg) +
+     # Add your geom, remember, scatterplot go by a different geom name
+```
+
+```{r exer4-hint-2}
+ggplot(mpg) +
+     geom_point() # Add your aesthetic
+```
+
+```{r exer4-hint-3}
+ggplot(mpg) +
+     geom_point(aes(x = hwy, y = cyl))
+```
+
+## 5. What happens if you make a scatterplot of class vs drv? Why is the plot not useful?
+
+```{r exer5, exercise = TRUE}
+
+```
+
+```{r exer5-solution}
+ggplot(mpg) +
+     geom_point(aes(x = class, y = drv))
+```
+
+## 6. What’s gone wrong with this code? Why are the points not blue?
+
+```{r exer6, exercise = TRUE}
+ggplot(data = mpg) +
+geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+```
+
+<div id="exer6-hint">
+**Explanation**  Since you are setting the color manually, it needs to be set outside of the 
+aes() mapping. `ggplot(data = mpg) +
+geom_point(mapping = aes(x = displ, y = hwy), color = "blue")`
+</div>
+
+## 7. Which variables in mpg are categorical? Which variables are continuous? (Hint: type ?mpg to read the
+documentation for the dataset). How can you see this information when you run mpg?
+
+```{r exer7, exercise = TRUE}
+
+```
+
+## 8. Map a continuous variable to color, size, and shape. How do these aesthetics behave differently for
+categorical vs. continuous variables?
+
+```{r exer8, exercise = TRUE}
+
+```
+
+## 9. What happens if you map the same variable to multiple aesthetics?
+
+```{r exer9, exercise = TRUE}
+
+```
+
+## 10. What does the stroke aesthetic do? What shapes does it work with? (Hint: use ?geom_point)
+
+This vignette may provide some answers.
+
+[Aesthetic Specifications](https://cran.r-project.org/web/packages/ggplot2/vignettes/ggplot2-specs.html)
+
+```{r exer10, exercise = TRUE}
+
+```
+
+## 11. What happens if you map an aesthetic to something other than a variable name, like aes(colour =
+displ < 5)?
+
+```{r exer11, exercise = TRUE}
+
+```
+
+## 12.  What happens if you facet on a continuous variable?
+
+## 13.  What do the empty cells in plot with `facet_grid(drv ~ cyl)` mean?
+    How do they relate to this plot?
+    
+    ```{r exer13, exercise = TRUE, eval = FALSE}
+    ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = drv, y = cyl))
+    ```
+
+## 14.  What plots does the following code make? What does `.` do?
+
+    ```{r exer14, exercise = TRUE, eval = FALSE}
+    ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy)) +
+      facet_grid(drv ~ .)
+    
+    ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy)) +
+      facet_grid(. ~ cyl)
+    ```
+
+## 15.  Take the first faceted plot in this section:
+
+    ```{r exer15, exercise = TRUE, eval = FALSE}
+    ggplot(data = mpg) + 
+      geom_point(mapping = aes(x = displ, y = hwy)) + 
+      facet_wrap(~ class, nrow = 2)
+    ```
+    
+    What are the advantages to using faceting instead of the colour aesthetic?
+    What are the disadvantages? How might the balance change if you had a 
+    larger dataset?
+    
+## 16.  Read `?facet_wrap`. What does `nrow` do? What does `ncol` do? What other
+    options control the layout of the individual panels? Why doesn't
+    `facet_grid()` have `nrow` and `ncol` argument?
+
+## 17.  When using `facet_grid()` you should usually put the variable with more
+    unique levels in the columns. Why?
+    
+18.  What geom would you use to draw a line chart? A boxplot? 
+    A histogram? An area chart?
+
+## 19.  Run this code in your head and predict what the output will look like.
+
+    Then, run the code in R and check your predictions.
+    
+    ```{r exer19, exercise = TRUE, eval = FALSE}
+    ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+      geom_point() + 
+      geom_smooth(se = FALSE)
+    ```
+
+## 20.  What does `show.legend = FALSE` do?  What happens if you remove it?  
+    Why do you think I used it earlier in the chapter?
+
+## 21.  What does the `se` argument to `geom_smooth()` do?
+
+
+## 22.  Will these two graphs look different? Why/why not?
+
+    ```{r exer22, exercise = TRUE, eval = FALSE}
+    ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+      geom_point() + 
+      geom_smooth()
+    
+    ggplot() + 
+      geom_point(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+      geom_smooth(data = mpg, mapping = aes(x = displ, y = hwy))
+    ```
+
+## 23.  Recreate the R code necessary to generate the following graphs.
+  
+![Exercise 23](images/Exercise23.png)
+
+

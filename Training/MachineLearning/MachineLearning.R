@@ -1,4 +1,5 @@
 library(caret)
+library(C50)
 library(readr)
 library(mlbench)
 library(partykit)
@@ -6,7 +7,7 @@ library(gmodels)
 set.seed(0622)
 
 # Collect The Data
-credit <- read_csv("~/Documents/OneDrive/GitHub/NASADatanauts/presentations/MachineLearning/code/chapter 5/credit.csv")
+credit <- read_csv("Training/MachineLearning/code/chapter 5/credit.csv")
 #If the first argument to createDataPartition() is categorical caret will perform stratified random sampling on the variable levels.
 
 # Explore and Prepare the Data

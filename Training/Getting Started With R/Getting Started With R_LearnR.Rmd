@@ -195,7 +195,7 @@ them:
 
 `c(v1,v3)`
 
-```{r}
+```{r mixed_vector,  exercise = TRUE}
 
 ```
 
